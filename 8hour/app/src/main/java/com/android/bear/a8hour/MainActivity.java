@@ -5,12 +5,14 @@ import android.os.CountDownTimer;
 import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Chronometer;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.sql.Time;
@@ -25,6 +27,7 @@ public class MainActivity extends AppCompatActivity {
     Button mPauseButton;
     boolean paused = false;
     CountDownTimer cdLeft;
+    LinearLayout taskList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,16 +37,21 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setImageResource(R.mipmap.ic_plus);
+        fab.setRippleColor(ContextCompat.getColor(this, R.color.black));
+
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                taskList.addView(new TaskView(getApplicationContext()));
+                /*Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();*/
             }
         });
 
         timeLeft = 8 * 60 * 60 * 1000;
 
+        taskList = (LinearLayout) findViewById(R.id.taskList);
         mTextTime = (TextView) findViewById(R.id.textView);
         mPauseButton = (Button) findViewById(R.id.pauseButton);
 
@@ -52,9 +60,15 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 paused = !paused;
+                if(paused){
+                    mPauseButton.setText("|>");
+                } else {
+                    mPauseButton.setText("| |");
+                }
 
             }
         });
+
 
         final Handler handler = new Handler();
         Timer timer = new Timer(false);
