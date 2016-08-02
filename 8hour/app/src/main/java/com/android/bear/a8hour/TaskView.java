@@ -14,6 +14,8 @@ import com.android.bear.a8hour.R;
  */
 public class TaskView extends LinearLayout {
 
+    boolean selected = false;
+
     public TaskView(Context context) {
         super(context);
 

@@ -16,22 +16,18 @@
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_centerHorizontal="true">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="Large Text"
-            android:id="@+id/textView"
-            android:layout_gravity="center_horizontal" />
+        android:layout_centerHorizontal="true"
+        android:weightSum="1">
 
         <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="| |"
+            android:layout_width="132dp"
+            android:layout_height="100dp"
+            android:text="8:00"
+            android:textSize="40dp"
+            android:textColor="@android:color/black"
             android:id="@+id/pauseButton"
-            android:layout_gravity="center_horizontal" />
+            android:layout_gravity="center_horizontal"
+            android:layout_weight="0.05" />
 
         <ScrollView
             android:layout_width="wrap_content"

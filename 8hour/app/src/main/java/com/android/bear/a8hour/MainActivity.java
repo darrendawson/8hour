@@ -23,7 +23,7 @@ import java.util.TimerTask;
 
 public class MainActivity extends AppCompatActivity {
     long timeLeft;
-    TextView mTextTime;
+    //TextView mTextTime;
     Button mPauseButton;
     boolean paused = false;
     CountDownTimer cdLeft;
@@ -52,19 +52,24 @@ public class MainActivity extends AppCompatActivity {
         timeLeft = 8 * 60 * 60 * 1000;
 
         taskList = (LinearLayout) findViewById(R.id.taskList);
-        mTextTime = (TextView) findViewById(R.id.textView);
+        //mTextTime = (TextView) findViewById(R.id.textView);
         mPauseButton = (Button) findViewById(R.id.pauseButton);
 
-        mTextTime.setText(msGetTime(timeLeft));
+        /*if(timeLeft>0) {
+            mTextTime.setText(msGetTime(timeLeft));
+        } else {
+            mTextTime.setText(0);
+        }*/
+        //mTextTime.setText(msGetTime(timeLeft));
         mPauseButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 paused = !paused;
-                if(paused){
+                /*if(paused){
                     mPauseButton.setText("|>");
                 } else {
                     mPauseButton.setText("| |");
-                }
+                }*/
 
             }
         });
@@ -80,7 +85,12 @@ public class MainActivity extends AppCompatActivity {
                     public void run() {
                         if(!paused) {
                             timeLeft -= 60 * 1000;
-                            mTextTime.setText(msGetTime(timeLeft));
+                            //mTextTime.setText(msGetTime(timeLeft));
+                            if(timeLeft>0) {
+                                mPauseButton.setText(msGetTime(timeLeft));
+                            } else {
+                                mPauseButton.setText("Done!");
+                            }
                         }
                     }
                 });
