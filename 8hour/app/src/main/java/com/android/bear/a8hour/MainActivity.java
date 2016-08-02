@@ -1,5 +1,8 @@
 package com.android.bear.a8hour;
 
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -47,10 +50,32 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 taskList.addView(new TaskView(getApplicationContext()));
+
+                //creates pop up
+                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(MainActivity.this);
+
+                final EditText et = new EditText(MainActivity.this);
+
+                // set prompts.xml to alertdialog builder
+                alertDialogBuilder.setView(et);
+
+                // set dialog message
+                alertDialogBuilder.setCancelable(false).setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                    }
+                });
+
+                // create alert dialog
+                AlertDialog alertDialog = alertDialogBuilder.create();
+                // show it
+                alertDialog.show();
+                
                 /*Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();*/
             }
         });
+
+
 
         timeLeft = 8 * 60 * 60 * 1000;
 
