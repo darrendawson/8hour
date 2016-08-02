@@ -1,5 +1,7 @@
 package com.android.bear.a8hour;
 
+import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
@@ -37,7 +39,8 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setImageResource(R.mipmap.ic_plus);
+        fab.setImageResource(R.drawable.ic_plus);
+        fab.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(this, R.color.colorPrimary)));
         fab.setRippleColor(ContextCompat.getColor(this, R.color.black));
 
         fab.setOnClickListener(new View.OnClickListener() {
@@ -65,11 +68,13 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 paused = !paused;
-                /*if(paused){
-                    mPauseButton.setText("|>");
+                if(paused){
+                    mPauseButton.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.white));
+                    //mPauseButton.setText("|>");
                 } else {
-                    mPauseButton.setText("| |");
-                }*/
+                    mPauseButton.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.gold));
+                    //mPauseButton.setText("| |");
+                }
 
             }
         });
