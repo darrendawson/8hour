@@ -5,10 +5,12 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 // ...
@@ -16,6 +18,7 @@ import android.widget.Toast;
 public class EditNameDialog extends DialogFragment {
 
     private EditText mEditText;
+    Button addButton;
 
     public EditNameDialog() {
         // Empty constructor required for DialogFragment
@@ -40,10 +43,25 @@ public class EditNameDialog extends DialogFragment {
         Toast toast = Toast.makeText(getContext(), "onStart", 10);
         toast.show();
 
-        Dialog dialog = getDialog();
+        final Dialog dialog = getDialog();
         if (dialog != null) {
             dialog.getWindow().setLayout(1300, 750);
             dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         }
+
+        addButton = (Button) getView().findViewById(R.id.addButton);
+
+        addButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //test to see if this gets called
+                //addButton.setTextColor(ContextCompat.getColor(getContext(), R.color.white));
+
+                //close fragment
+                dialog.dismiss();
+            }
+        });
     }
+
+
 }
