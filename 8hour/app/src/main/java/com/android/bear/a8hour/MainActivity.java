@@ -10,6 +10,7 @@ import android.os.CountDownTimer;
 import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -51,6 +52,11 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 taskList.addView(new TaskView(getApplicationContext()));
 
+                FragmentManager fm = getSupportFragmentManager();
+                EditNameDialog editNameDialog = new EditNameDialog();
+                editNameDialog.show(fm, "fragment_edit_name");
+
+                /*
                 //creates pop up
                 AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(MainActivity.this);
 
@@ -67,9 +73,10 @@ public class MainActivity extends AppCompatActivity {
 
                 // create alert dialog
                 AlertDialog alertDialog = alertDialogBuilder.create();
+
                 // show it
-                alertDialog.show();
-                
+                alertDialog.show();*/
+
                 /*Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();*/
             }

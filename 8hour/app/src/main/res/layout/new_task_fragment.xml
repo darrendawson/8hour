@@ -1,0 +1,65 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/edit_name"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:layout_gravity="center"
+    android:layout_weight="0.0"
+    android:background="@color/backgroundDarkBlue"
+    android:orientation="vertical"  >
+
+    <TextView
+        android:id="@+id/lbl_your_name"
+        android:text="Task"
+        android:textColor="@color/gold"
+        android:textSize="25dp"
+        android:layout_width="62dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"/>
+
+    <EditText
+        android:id="@+id/txt_your_name"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:inputType="text"
+        android:textColor="@android:color/darker_gray"
+        android:text=""
+        android:background="@color/taskLight"
+        android:imeOptions="actionDone" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Project"
+        android:textColor="@color/white"
+        android:textSize="25dp"
+        android:id="@+id/textView"
+        android:layout_marginLeft="15dp"
+        android:layout_marginBottom="5dp"
+        android:layout_marginTop="5dp"/>
+
+    <EditText
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:inputType="text"
+        android:text=""
+        android:textColor="@android:color/darker_gray"
+        android:background="@color/taskLight"
+        android:id="@+id/editText"
+        android:imeOptions="actionDone"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="+"
+        android:textSize="35dp"
+        android:id="@+id/button"
+        android:background="@color/colorPrimary"
+        android:textColor="@color/gold"
+        android:layout_gravity="right"
+        android:layout_marginRight="15dp"
+        android:layout_marginTop="15dp"/>
+</LinearLayout>
