@@ -19,7 +19,7 @@
         android:layout_marginBottom="5dp"/>
 
     <EditText
-        android:id="@+id/txt_your_name"
+        android:id="@+id/getTask"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
@@ -48,7 +48,7 @@
         android:text=""
         android:textColor="@android:color/darker_gray"
         android:background="@color/taskLight"
-        android:id="@+id/editText"
+        android:id="@+id/getProject"
         android:imeOptions="actionDone"/>
 
     <Button

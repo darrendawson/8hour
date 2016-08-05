@@ -20,6 +20,7 @@ import android.widget.Chronometer;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.sql.Time;
 import java.util.Calendar;
@@ -27,7 +28,7 @@ import java.util.GregorianCalendar;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements EditNameDialog.EditNameDialogListener {
     long timeLeft;
     //TextView mTextTime;
     Button mPauseButton;
@@ -50,35 +51,11 @@ public class MainActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                taskList.addView(new TaskView(getApplicationContext()));
 
+                //run "New Task" fragment
                 FragmentManager fm = getSupportFragmentManager();
                 EditNameDialog editNameDialog = new EditNameDialog();
                 editNameDialog.show(fm, "fragment_edit_name");
-
-                /*
-                //creates pop up
-                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(MainActivity.this);
-
-                final EditText et = new EditText(MainActivity.this);
-
-                // set prompts.xml to alertdialog builder
-                alertDialogBuilder.setView(et);
-
-                // set dialog message
-                alertDialogBuilder.setCancelable(false).setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                    }
-                });
-
-                // create alert dialog
-                AlertDialog alertDialog = alertDialogBuilder.create();
-
-                // show it
-                alertDialog.show();*/
-
-                /*Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();*/
             }
         });
 
@@ -147,5 +124,16 @@ public class MainActivity extends AppCompatActivity {
 
     private int msGetMinutes (long ms) {
         return (int)(ms % (60*60*1000)) / (1000 * 60);
+    }
+
+
+    @Override
+    public void onFinishEditDialog(Bundle input) {
+        Toast.makeText(this, "Hi, " + input.getString("task") + input.getString("project"), Toast.LENGTH_SHORT).show();
+
+        //create card
+        TaskView newCard = new TaskView(getApplicationContext());
+        newCard.updateTaskInfo(input);
+        taskList.addView(newCard);
     }
 }
