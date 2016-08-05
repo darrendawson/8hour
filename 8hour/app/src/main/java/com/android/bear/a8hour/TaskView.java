@@ -32,6 +32,9 @@ public class TaskView extends LinearLayout {
     static final String PROJECT = "project";
     TextView taskText;
     TextView projectText;
+    TextView timeSpentText;
+    long milliseconds;
+    String time;
 
     public TaskView(Context context) {
         super(context);
@@ -41,6 +44,7 @@ public class TaskView extends LinearLayout {
 
         taskText = (TextView)findViewById(R.id.taskName);
         projectText = (TextView)findViewById(R.id.projectName);
+        timeSpentText = (TextView)findViewById(R.id.timeSpent);
     }
 
     public TaskView(Context context, Activity activity) {
@@ -63,12 +67,29 @@ public class TaskView extends LinearLayout {
         projectText.setText(input.getString(PROJECT));
     }
 
-    public void selectCard()
-    {
+    public void selectCard() {
         taskText.setTextColor(ContextCompat.getColor(getContext(), R.color.gold));
     }
-    public void deselectCard()
-    {
+    public void deselectCard() {
         taskText.setTextColor(ContextCompat.getColor(getContext(), R.color.white));
+    }
+    public void increment(float increment)
+    {
+        milliseconds+=increment;
+        time = msGetTime(milliseconds);
+        timeSpentText.setText(time);
+
+    }
+    private String msGetTime(long ms) {
+        int minutes = msGetMinutes(ms);
+
+        return "" + msGetHours(ms) + ":" + (minutes <= 9 ? "0" + minutes : minutes);
+    }
+    private int msGetHours (long ms) {
+        return (int)(ms / (1000 * 60 * 60));
+    }
+
+    private int msGetMinutes (long ms) {
+        return (int)(ms % (60*60*1000)) / (1000 * 60);
     }
 }

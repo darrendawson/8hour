@@ -26,7 +26,7 @@
             android:layout_height="132dp"
             android:text="8:00"
             android:textSize="40dp"
-            android:textColor="@color/gold"
+            android:textColor="@color/white"
             android:background="@color/colorPrimary"
             android:id="@+id/pauseButton"
             android:layout_gravity="center_horizontal"

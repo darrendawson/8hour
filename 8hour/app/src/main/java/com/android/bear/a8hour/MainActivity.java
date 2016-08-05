@@ -32,10 +32,11 @@ public class MainActivity extends AppCompatActivity implements EditNameDialog.Ed
     long timeLeft;
     //TextView mTextTime;
     Button mPauseButton;
-    boolean paused = false;
+    boolean paused = true;
     CountDownTimer cdLeft;
     LinearLayout taskList;
     TaskView selectedTask;
+    float increment = 1000;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,10 +101,14 @@ public class MainActivity extends AppCompatActivity implements EditNameDialog.Ed
                     @Override
                     public void run() {
                         if(!paused) {
-                            timeLeft -= 60 * 1000;
+                            timeLeft -= increment*60; //60 * 1000
                             //mTextTime.setText(msGetTime(timeLeft));
                             if(timeLeft>0) {
                                 mPauseButton.setText(msGetTime(timeLeft));
+
+                                //increment time on selected task
+                                selectedTask.increment(increment*60);
+
                             } else {
                                 mPauseButton.setText("Done!");
                             }
@@ -143,6 +148,7 @@ public class MainActivity extends AppCompatActivity implements EditNameDialog.Ed
         }
         selectedTask = newCard;
         selectedTask.selectCard();
+        paused=false;
     }
 
     @Override
