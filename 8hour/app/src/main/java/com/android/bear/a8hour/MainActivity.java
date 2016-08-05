@@ -28,13 +28,14 @@ import java.util.GregorianCalendar;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class MainActivity extends AppCompatActivity implements EditNameDialog.EditNameDialogListener {
+public class MainActivity extends AppCompatActivity implements EditNameDialog.EditNameDialogListener, TaskView.SelectTask{
     long timeLeft;
     //TextView mTextTime;
     Button mPauseButton;
     boolean paused = false;
     CountDownTimer cdLeft;
     LinearLayout taskList;
+    TaskView selectedTask;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +59,7 @@ public class MainActivity extends AppCompatActivity implements EditNameDialog.Ed
                 editNameDialog.show(fm, "fragment_edit_name");
             }
         });
+
 
 
 
@@ -132,8 +134,22 @@ public class MainActivity extends AppCompatActivity implements EditNameDialog.Ed
         Toast.makeText(this, "Hi, " + input.getString("task") + input.getString("project"), Toast.LENGTH_SHORT).show();
 
         //create card
-        TaskView newCard = new TaskView(getApplicationContext());
+        TaskView newCard = new TaskView(getApplicationContext(), this);
         newCard.updateTaskInfo(input);
         taskList.addView(newCard);
+
+        if(selectedTask!=null) {
+            selectedTask.deselectCard();
+        }
+        selectedTask = newCard;
+        selectedTask.selectCard();
+    }
+
+    @Override
+    public void select(TaskView selectedCard) {
+        //TaskView previousCard = selectedTask;
+        selectedTask.deselectCard();
+        selectedTask = selectedCard;
+        selectedTask.selectCard();
     }
 }
