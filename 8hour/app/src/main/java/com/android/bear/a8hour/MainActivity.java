@@ -2,6 +2,7 @@ package com.android.bear.a8hour;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
@@ -22,9 +23,17 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.InputStreamReader;
 import java.sql.Time;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -35,6 +44,7 @@ public class MainActivity extends AppCompatActivity implements EditNameDialog.Ed
     boolean paused = true;
     CountDownTimer cdLeft;
     LinearLayout taskList;
+    ArrayList<TaskView> tasks = new ArrayList<>();
     TaskView selectedTask;
     float increment = 1000;
 
@@ -118,6 +128,9 @@ public class MainActivity extends AppCompatActivity implements EditNameDialog.Ed
             }
         };
         timer.scheduleAtFixedRate(timerTask, 1000, 1000);
+
+
+        load();
     }
 
     private String msGetTime(long ms) {
@@ -142,20 +155,69 @@ public class MainActivity extends AppCompatActivity implements EditNameDialog.Ed
         TaskView newCard = new TaskView(getApplicationContext(), this);
         newCard.updateTaskInfo(input);
         taskList.addView(newCard);
+        tasks.add(newCard);
 
         if(selectedTask!=null) {
             selectedTask.deselectCard();
         }
         selectedTask = newCard;
         selectedTask.selectCard();
+        mPauseButton.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.gold));
         paused=false;
     }
 
     @Override
     public void select(TaskView selectedCard) {
         //TaskView previousCard = selectedTask;
-        selectedTask.deselectCard();
+        if(selectedTask != null) {
+            selectedTask.deselectCard();
+        }
         selectedTask = selectedCard;
         selectedTask.selectCard();
+    }
+
+    private void save() {
+        String filename = "save";
+        FileOutputStream outputStream;
+
+        try {
+            Toast.makeText(getBaseContext(), "saving", Toast.LENGTH_LONG).show();
+            outputStream = openFileOutput(filename, Context.MODE_PRIVATE);
+            for(TaskView task : tasks) {
+                String output = task.toString() + "\n";
+                outputStream.write(output.getBytes());
+            }
+            //save int here
+
+            //
+            outputStream.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void load() {
+        String filename = "save";
+
+        try {
+            FileInputStream inputStream = openFileInput(filename);
+            BufferedReader r = new BufferedReader(new InputStreamReader(inputStream));
+
+            String line;
+            while ((line = r.readLine()) != null) {
+                Toast.makeText(getBaseContext(), line, Toast.LENGTH_LONG).show();
+                TaskView loadedTask = new TaskView(getApplicationContext(), this, line);
+                taskList.addView(loadedTask);
+                tasks.add(loadedTask);
+            }
+            inputStream.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        save();
     }
 }

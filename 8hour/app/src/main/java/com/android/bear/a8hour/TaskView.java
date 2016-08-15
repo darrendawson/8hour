@@ -17,6 +17,9 @@ import com.android.bear.a8hour.R;
 
 import org.w3c.dom.Text;
 
+import java.util.Arrays;
+import java.util.List;
+
 /**
  * Created by bear on 7/31/16.
  */
@@ -52,6 +55,19 @@ public class TaskView extends LinearLayout {
         owner = activity;
     }
 
+    public TaskView(Context context, Activity activity, String data) {
+        this(context, activity);
+
+        List<String> elements = Arrays.asList(data.split(","));
+
+        if(elements.size() == 3)
+        {
+            taskText.setText(elements.get(0));
+            projectText.setText(elements.get(1));
+            milliseconds = Long.parseLong(elements.get(2));
+        }
+    }
+
     @Override
     public boolean onTouchEvent(MotionEvent event) {
 
@@ -80,6 +96,11 @@ public class TaskView extends LinearLayout {
         timeSpentText.setText(time);
 
     }
+
+    public String toString() {
+        return taskText.getText() + "," + projectText.getText() + "," + milliseconds;
+    }
+
     private String msGetTime(long ms) {
         int minutes = msGetMinutes(ms);
 
