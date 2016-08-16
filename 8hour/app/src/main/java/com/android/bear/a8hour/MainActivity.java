@@ -89,15 +89,16 @@ public class MainActivity extends AppCompatActivity implements EditNameDialog.Ed
         mPauseButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                paused = !paused;
-                if(paused){
-                    mPauseButton.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.white));
-                    //mPauseButton.setText("|>");
-                } else {
-                    mPauseButton.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.gold));
-                    //mPauseButton.setText("| |");
+                if (tasks.size() > 0) {
+                    paused = !paused;
+                    if (paused) {
+                        mPauseButton.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.white));
+                        //mPauseButton.setText("|>");
+                    } else {
+                        mPauseButton.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.gold));
+                        //mPauseButton.setText("| |");
+                    }
                 }
-
             }
         });
 
@@ -117,7 +118,13 @@ public class MainActivity extends AppCompatActivity implements EditNameDialog.Ed
                                 mPauseButton.setText(msGetTime(timeLeft));
 
                                 //increment time on selected task
-                                selectedTask.increment(increment*60);
+                                if(tasks.size()>0) {
+                                    if (selectedTask == null) {
+                                        selectedTask = tasks.get(0);
+                                        selectedTask.selectCard();
+                                    }
+                                    selectedTask.increment(increment * 60);
+                                }
 
                             } else {
                                 mPauseButton.setText("Done!");
@@ -183,13 +190,14 @@ public class MainActivity extends AppCompatActivity implements EditNameDialog.Ed
         try {
             Toast.makeText(getBaseContext(), "saving", Toast.LENGTH_LONG).show();
             outputStream = openFileOutput(filename, Context.MODE_PRIVATE);
+
+            //save time here
+            outputStream.write(("" + timeLeft + "\n").getBytes());
+            //
             for(TaskView task : tasks) {
                 String output = task.toString() + "\n";
                 outputStream.write(output.getBytes());
             }
-            //save int here
-
-            //
             outputStream.close();
         } catch (Exception e) {
             e.printStackTrace();
@@ -204,8 +212,11 @@ public class MainActivity extends AppCompatActivity implements EditNameDialog.Ed
             BufferedReader r = new BufferedReader(new InputStreamReader(inputStream));
 
             String line;
+            line = r.readLine();
+            timeLeft = Long.parseLong(line);
+            mPauseButton.setText(msGetTime(timeLeft));
             while ((line = r.readLine()) != null) {
-                Toast.makeText(getBaseContext(), line, Toast.LENGTH_LONG).show();
+                //Toast.makeText(getBaseContext(), line, Toast.LENGTH_LONG).show();
                 TaskView loadedTask = new TaskView(getApplicationContext(), this, line);
                 taskList.addView(loadedTask);
                 tasks.add(loadedTask);

@@ -65,6 +65,7 @@ public class TaskView extends LinearLayout {
             taskText.setText(elements.get(0));
             projectText.setText(elements.get(1));
             milliseconds = Long.parseLong(elements.get(2));
+            timeSpentText.setText(msGetTime(milliseconds));
         }
     }
 
