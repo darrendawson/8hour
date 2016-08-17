@@ -136,7 +136,7 @@ public class MainActivity extends AppCompatActivity implements EditNameDialog.Ed
                             }
 
                             save();
-
+                            createNotification();
                         }
                     }
                 });
@@ -235,14 +235,12 @@ public class MainActivity extends AppCompatActivity implements EditNameDialog.Ed
         }
     }
 
-    @Override
-    public void onBackPressed() {
-        //save();
+    public void createNotification() {
         NotificationCompat.Builder mBuilder =
                 new NotificationCompat.Builder(this)
                         .setSmallIcon(R.drawable.ic_hourglass)
-                        .setContentTitle("My notification")
-                        .setContentText("Hello World!");
+                        .setContentTitle(selectedTask.getTaskName())
+                        .setContentText("" + msGetTime(timeLeft));
         // Creates an explicit intent for an Activity in your app
         Intent resultIntent = new Intent(this, MainActivity.class);
 
@@ -253,14 +251,17 @@ public class MainActivity extends AppCompatActivity implements EditNameDialog.Ed
         TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
         // Adds the back stack for the Intent (but not the Intent itself)
         stackBuilder.addParentStack(MainActivity.class);
-        // Adds the Intent that starts the Activity to the top of the stack
-        stackBuilder.addNextIntent(resultIntent);
-        PendingIntent resultPendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
-        mBuilder.setContentIntent(resultPendingIntent);
+
         NotificationManager mNotificationManager =
                 (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         // mId allows you to update the notification later on.
-        mNotificationManager.notify(0, mBuilder.build());
+        int notifyID = 0;
+        mNotificationManager.notify(notifyID, mBuilder.build());
+    }
 
+    @Override
+    public void onBackPressed() {
+        //save();
+        //createNotification();
     }
 }

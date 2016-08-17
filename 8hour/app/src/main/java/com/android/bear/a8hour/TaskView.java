@@ -102,6 +102,10 @@ public class TaskView extends LinearLayout {
         return taskText.getText() + "," + projectText.getText() + "," + milliseconds;
     }
 
+    public String getTaskName() {
+        return taskText.getText() + "";
+    }
+
     private String msGetTime(long ms) {
         int minutes = msGetMinutes(ms);
 
