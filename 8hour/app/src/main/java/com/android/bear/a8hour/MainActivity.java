@@ -191,6 +191,14 @@ public class MainActivity extends AppCompatActivity implements EditNameDialog.Ed
         selectedTask.selectCard();
     }
 
+    @Override
+    public void remove(TaskView currentCard) {
+        if(currentCard == selectedTask) {
+            tasks.remove(currentCard);
+            taskList.removeView(currentCard);
+        }
+    }
+
     private void save() {
         String filename = "save";
         FileOutputStream outputStream;

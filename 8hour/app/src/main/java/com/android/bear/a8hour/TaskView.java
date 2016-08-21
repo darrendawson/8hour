@@ -23,10 +23,11 @@ import java.util.List;
 /**
  * Created by bear on 7/31/16.
  */
-public class TaskView extends LinearLayout {
+public class TaskView extends LinearLayout implements /*View.OnLongClickListener, View.OnClickListener,*/ View.OnTouchListener{
 
     public interface SelectTask {
         void select(TaskView selectedCard);
+        void remove(TaskView selectedCard);
     }
 
     Activity owner;
@@ -38,6 +39,8 @@ public class TaskView extends LinearLayout {
     TextView timeSpentText;
     long milliseconds;
     String time;
+    private float x1,x2;
+    static final int minDistance = 500;
 
     public TaskView(Context context) {
         super(context);
@@ -48,6 +51,10 @@ public class TaskView extends LinearLayout {
         taskText = (TextView)findViewById(R.id.taskName);
         projectText = (TextView)findViewById(R.id.projectName);
         timeSpentText = (TextView)findViewById(R.id.timeSpent);
+
+        //this.setOnLongClickListener(this);
+        //this.setOnClickListener(this);
+        this.setOnTouchListener(this);
     }
 
     public TaskView(Context context, Activity activity) {
@@ -70,12 +77,46 @@ public class TaskView extends LinearLayout {
     }
 
     @Override
-    public boolean onTouchEvent(MotionEvent event) {
+    public boolean onTouch(View view, MotionEvent event) {
+        //on click
+        //on long click
+        //on swipe
+        switch(event.getAction()) {
+            case MotionEvent.ACTION_DOWN:
+                x1 = event.getX();
+                break;
+            case MotionEvent.ACTION_UP:
+                x2 = event.getX();
+                float distance = Math.abs(x2-x1);
+                //if normal click -> distance < minDistance
+                if(distance<minDistance) {
+                    SelectTask activity = (SelectTask) owner;
+                    activity.select(this);
+                } else {
+                    Toast.makeText(getContext(), "swipe" + distance, Toast.LENGTH_SHORT).show();
+                    //delete
+                    SelectTask remover = (SelectTask) owner;
+                    remover.remove(this);
+
+                }
+                break;
+        }
+        //if swipe
+        return true;
+    }
+    /*
+    @Override
+    public void onClick(View view) {
 
         SelectTask activity = (SelectTask)owner;
         activity.select(this);
-        return true;
     }
+
+    @Override
+    public boolean onLongClick(View view) {
+        Toast.makeText(getContext(), "puta", Toast.LENGTH_LONG).show();
+        return true;
+    }*/
 
     public void updateTaskInfo(Bundle input) {
 
