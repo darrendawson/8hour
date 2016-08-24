@@ -46,12 +46,17 @@ public class MainActivity extends AppCompatActivity implements EditNameDialog.Ed
     long timeLeft;
     //TextView mTextTime;
     Button mPauseButton;
+    Button viewLogButton;
+    Button newDayButton;
     boolean paused = true;
     CountDownTimer cdLeft;
     LinearLayout taskList;
     ArrayList<TaskView> tasks = new ArrayList<>();
     TaskView selectedTask;
     float increment = 1000;
+    Calendar calendar;
+    String date;
+    String weekDay;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,14 +81,15 @@ public class MainActivity extends AppCompatActivity implements EditNameDialog.Ed
             }
         });
 
-
-
+        calendar = Calendar.getInstance();
 
         timeLeft = 8 * 60 * 60 * 1000;
 
         taskList = (LinearLayout) findViewById(R.id.taskList);
         //mTextTime = (TextView) findViewById(R.id.textView);
         mPauseButton = (Button) findViewById(R.id.pauseButton);
+        viewLogButton = (Button) findViewById(R.id.viewLogButton);
+        newDayButton = (Button) findViewById(R.id.newDayButton);
 
         /*if(timeLeft>0) {
             mTextTime.setText(msGetTime(timeLeft));
@@ -104,6 +110,24 @@ public class MainActivity extends AppCompatActivity implements EditNameDialog.Ed
                         //mPauseButton.setText("| |");
                     }
                 }
+            }
+        });
+
+        viewLogButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent openLog = new Intent(getApplicationContext(), Logs.class);
+                startActivity(openLog);
+            }
+        });
+        newDayButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                date = getDate();
+                weekDay = getDayofWeek();
+
+                Toast.makeText(getApplicationContext(), "date: " + weekDay, Toast.LENGTH_SHORT).show();
+                //save all the info, all of it
             }
         });
 
@@ -271,5 +295,40 @@ public class MainActivity extends AppCompatActivity implements EditNameDialog.Ed
     public void onBackPressed() {
         //save();
         //createNotification();
+    }
+
+    public String getDate() {
+        int day = calendar.get(Calendar.DATE);
+        int month = calendar.get(Calendar.MONTH);
+        int year = calendar.get(Calendar.YEAR);
+        return month + "/" + day + "/" + year;
+    }
+    public String getDayofWeek() {
+        int day = calendar.get(Calendar.DAY_OF_WEEK);
+        String dayofWeek = "null";
+        switch(day) {
+            case Calendar.SUNDAY:
+                dayofWeek = "Sunday";
+                break;
+            case Calendar.MONDAY:
+                dayofWeek = "Monday";
+                break;
+            case Calendar.TUESDAY:
+                dayofWeek = "Tuesday";
+                break;
+            case Calendar.WEDNESDAY:
+                dayofWeek = "Wednesday";
+                break;
+            case Calendar.THURSDAY:
+                dayofWeek = "Thursday";
+                break;
+            case Calendar.FRIDAY:
+                dayofWeek = "Friday";
+                break;
+            case Calendar.SATURDAY:
+                dayofWeek = "Saturday";
+                break;
+        }
+        return dayofWeek;
     }
 }

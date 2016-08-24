@@ -16,21 +16,45 @@
 
     <LinearLayout
         android:orientation="vertical"
-        android:layout_width="match_parent"
+        android:layout_width="fill_parent"
         android:layout_height="match_parent"
         android:layout_centerHorizontal="true"
         android:weightSum="1">
 
-        <Button
-            android:layout_width="132dp"
-            android:layout_height="132dp"
-            android:text="8:00"
-            android:textSize="40dp"
-            android:textColor="@color/white"
-            android:background="@color/colorPrimary"
-            android:id="@+id/pauseButton"
-            android:layout_gravity="center_horizontal"
-            android:layout_weight="0.0" />
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="194dp"
+            android:layout_gravity="center_horizontal">
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="&lt;-"
+                android:id="@+id/viewLogButton"
+                android:layout_marginRight="30dp"
+                android:layout_marginTop="80dp" />
+
+            <Button
+                android:layout_width="132dp"
+                android:layout_height="132dp"
+                android:text="8:00"
+                android:textSize="40dp"
+                android:textColor="@color/white"
+                android:background="@color/colorPrimary"
+                android:id="@+id/pauseButton"
+                android:layout_gravity="center_horizontal"
+                android:layout_weight="0.0" />
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="+"
+                android:id="@+id/newDayButton"
+                android:layout_marginLeft="30dp"
+                android:layout_marginTop="80dp" />
+
+        </LinearLayout>
 
         <ScrollView
             android:layout_width="wrap_content"
