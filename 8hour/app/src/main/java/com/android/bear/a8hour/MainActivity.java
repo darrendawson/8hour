@@ -147,9 +147,8 @@ public class MainActivity extends AppCompatActivity implements EditNameDialog.Ed
                     @Override
                     public void run() {
                         if(!paused) {
-                            timeLeft -= increment; //60 * 1000
-                            //mTextTime.setText(msGetTime(timeLeft));
                             if(timeLeft>0) {
+                                timeLeft -= increment; //60 * 1000
                                 mPauseButton.setText(msGetTime(timeLeft));
 
                                 //increment time on selected task
@@ -163,10 +162,11 @@ public class MainActivity extends AppCompatActivity implements EditNameDialog.Ed
 
                             } else {
                                 mPauseButton.setText("Done!");
+                                paused=true;
                             }
 
                             save();
-                            //createNotification();
+                            createNotification();
                         }
                     }
                 });
