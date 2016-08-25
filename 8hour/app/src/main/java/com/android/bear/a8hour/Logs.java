@@ -1,5 +1,6 @@
 package com.android.bear.a8hour;
 
+import android.content.Intent;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -17,8 +18,17 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import android.widget.TextView;
+import android.widget.Toast;
+
+import org.w3c.dom.Text;
+
+import java.sql.Array;
+import java.util.ArrayList;
 
 public class Logs extends AppCompatActivity {
+
+    static final String LOGSKEY = "logsKey";
+    static ArrayList<String> savedData;
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -39,6 +49,11 @@ public class Logs extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_logs);
+
+        //get Logs
+        Intent intent = getIntent();
+        savedData = intent.getExtras().getStringArrayList(LOGSKEY);
+
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -102,7 +117,7 @@ public class Logs extends AppCompatActivity {
         public Fragment getItem(int position) {
             // getItem is called to instantiate the fragment for the given page.
             // Return a PlaceholderFragment (defined as a static inner class below).
-            return PlaceholderFragment.newInstance(position + 1);
+            return PlaceholderFragment.newInstance(position);
         }
 
         @Override
@@ -133,6 +148,9 @@ public class Logs extends AppCompatActivity {
          * The fragment argument representing the section number for this
          * fragment.
          */
+        int index = 0;
+        String day;
+        String date;
         private static final String ARG_SECTION_NUMBER = "section_number";
 
         /**
@@ -154,9 +172,33 @@ public class Logs extends AppCompatActivity {
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                 Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_logs, container, false);
-            TextView textView = (TextView) rootView.findViewById(R.id.section_label);
-            textView.setText(getString(R.string.section_format, getArguments().getInt(ARG_SECTION_NUMBER)));
+
+            //index = page number (starting at 0)
+            index = getArguments().getInt(ARG_SECTION_NUMBER);
+
+            TextView textView = (TextView) rootView.findViewById(R.id.logInfo);
+            //textView.setText(getString(R.string.section_format, getArguments().getInt(ARG_SECTION_NUMBER)));
+
+
+            Toast.makeText(getContext(), "" + index, Toast.LENGTH_SHORT).show();
+            if(savedData.size() > index) {
+                //textView.setText(savedData.get(index) + ""); //this shit is a nullpointer for some reason
+                setPageText(index,textView);
+            }
+
             return rootView;
         }
+
+        //out of bounds exception index = 1 and length = 1
+        public void setPageText(int index, TextView textView) {
+            //Split up strings by ; first - first two Strings are Day and date
+            String[] pageText = savedData.get(index).split(";");
+            day = pageText[0];
+            date = pageText[1];
+            textView.setText(day);
+
+            //split by ,
+        }
     }
+
 }

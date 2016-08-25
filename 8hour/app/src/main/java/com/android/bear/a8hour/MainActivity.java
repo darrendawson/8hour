@@ -33,6 +33,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.InputStreamReader;
+import java.sql.Array;
 import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -54,6 +55,7 @@ public class MainActivity extends AppCompatActivity implements EditNameDialog.Ed
     ArrayList<TaskView> tasks = new ArrayList<>();
     TaskView selectedTask;
     float increment = 1000;
+
     Calendar calendar;
     String date;
     String weekDay;
@@ -117,7 +119,9 @@ public class MainActivity extends AppCompatActivity implements EditNameDialog.Ed
             @Override
             public void onClick(View v) {
                 Intent openLog = new Intent(getApplicationContext(), Logs.class);
+                openLog.putExtra(Logs.LOGSKEY, createLogArrayList());
                 startActivity(openLog);
+                //pass logList to new Activity
             }
         });
         newDayButton.setOnClickListener(new View.OnClickListener() {
@@ -125,9 +129,12 @@ public class MainActivity extends AppCompatActivity implements EditNameDialog.Ed
             public void onClick(View v) {
                 date = getDate();
                 weekDay = getDayofWeek();
+                String test = createLog();
+                saveLog();
 
-                Toast.makeText(getApplicationContext(), "date: " + weekDay, Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), test, Toast.LENGTH_SHORT).show();
                 //save all the info, all of it
+                //add getLog() to saved data
             }
         });
 
@@ -243,6 +250,20 @@ public class MainActivity extends AppCompatActivity implements EditNameDialog.Ed
             e.printStackTrace();
         }
     }
+    private void saveLog() {
+        String filename = "saveLog";
+        FileOutputStream outputStream;
+
+        try {
+            outputStream = openFileOutput(filename, Context.MODE_PRIVATE);
+            outputStream.write((createLog() + "\n").getBytes());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    private void sendLog() {
+        //load
+    }
 
     private void load() {
         String filename = "save";
@@ -330,5 +351,33 @@ public class MainActivity extends AppCompatActivity implements EditNameDialog.Ed
                 break;
         }
         return dayofWeek;
+    }
+    public ArrayList<String> createLogArrayList() {
+        ArrayList<String> logList = new ArrayList<>();
+        String filename = "saveLog";
+
+        try {
+            FileInputStream inputStream = openFileInput(filename);
+            BufferedReader r = new BufferedReader(new InputStreamReader(inputStream));
+
+            String line;
+
+            while ((line = r.readLine()) != null) {
+                logList.add(line);
+            }
+            inputStream.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return logList;
+    }
+    public String createLog() {
+        String log = "";
+        log = getDayofWeek() + ";";
+        log += getDate() + ";";
+        for(int i=0; i<tasks.size(); i++) {
+            log += tasks.get(i).toLog();
+        }
+        return log;
     }
 }

@@ -143,8 +143,16 @@ public class TaskView extends LinearLayout implements /*View.OnLongClickListener
         return taskText.getText() + "," + projectText.getText() + "," + milliseconds;
     }
 
+    public String toLog() {
+        return taskText.getText() + "," + projectText.getText() + "," + msGetTime(milliseconds) + ";";
+    }
+
     public String getTaskName() {
         return taskText.getText() + "";
+    }
+
+    public String getProjectName() {
+        return projectText.getText() + "";
     }
 
     private String msGetTime(long ms) {
