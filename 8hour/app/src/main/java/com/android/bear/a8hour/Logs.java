@@ -70,8 +70,7 @@ public class Logs extends AppCompatActivity {
       fab.setOnClickListener(new View.OnClickListener() {
           @Override
           public void onClick(View view) {
-              Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                      .setAction("Action", null).show();
+              finish();
           }
       });
 
@@ -122,8 +121,9 @@ public class Logs extends AppCompatActivity {
 
         @Override
         public int getCount() {
-            // Show 3 total pages.
-            return 3;
+            // number of lines in arraylist
+            int pages = savedData.size();
+            return pages;
         }
 
         @Override
@@ -151,6 +151,7 @@ public class Logs extends AppCompatActivity {
         int index = 0;
         String day;
         String date;
+        String taskInfo;
         private static final String ARG_SECTION_NUMBER = "section_number";
 
         /**
@@ -176,28 +177,48 @@ public class Logs extends AppCompatActivity {
             //index = page number (starting at 0)
             index = getArguments().getInt(ARG_SECTION_NUMBER);
 
-            TextView textView = (TextView) rootView.findViewById(R.id.logInfo);
+            TextView dayText = (TextView) rootView.findViewById(R.id.day);
+            TextView dateText = (TextView) rootView.findViewById(R.id.date);
+            TextView logText = (TextView) rootView.findViewById(R.id.logInfo);
             //textView.setText(getString(R.string.section_format, getArguments().getInt(ARG_SECTION_NUMBER)));
 
 
-            Toast.makeText(getContext(), "" + index, Toast.LENGTH_SHORT).show();
             if(savedData.size() > index) {
                 //textView.setText(savedData.get(index) + ""); //this shit is a nullpointer for some reason
-                setPageText(index,textView);
+                setPageText(index, dayText, dateText, logText);
             }
 
             return rootView;
         }
 
         //out of bounds exception index = 1 and length = 1
-        public void setPageText(int index, TextView textView) {
+        public void setPageText(int index, TextView dayText, TextView dateText, TextView logText) {
             //Split up strings by ; first - first two Strings are Day and date
             String[] pageText = savedData.get(index).split(";");
             day = pageText[0];
             date = pageText[1];
-            textView.setText(day);
+            dayText.setText(day);
+            dateText.setText(date);
 
-            //split by ,
+            taskInfo = getFormattedTaskText(pageText[2]);
+            logText.setText(taskInfo);
+        }
+
+        public String getFormattedTaskText(String text) {
+            String tasks = "";
+            String[] individualTasks = text.split("<");
+
+            for(int i=0;i<individualTasks.length;i++) {
+                //split by ","
+                String[] taskParts = individualTasks[i].split(",");
+
+                for(int j=0;j<taskParts.length;j++) {
+                    tasks += taskParts[j] + "\n";
+                }
+                tasks = tasks + "\n";
+
+            }
+            return tasks;
         }
     }
 

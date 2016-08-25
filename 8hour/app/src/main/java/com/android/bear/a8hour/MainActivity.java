@@ -40,6 +40,7 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.Scanner;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -59,6 +60,8 @@ public class MainActivity extends AppCompatActivity implements EditNameDialog.Ed
     Calendar calendar;
     String date;
     String weekDay;
+
+    String finalLog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -132,7 +135,7 @@ public class MainActivity extends AppCompatActivity implements EditNameDialog.Ed
                 String test = createLog();
                 saveLog();
 
-                Toast.makeText(getApplicationContext(), test, Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getApplicationContext(), test, Toast.LENGTH_SHORT).show();
                 //save all the info, all of it
                 //add getLog() to saved data
             }
@@ -195,8 +198,6 @@ public class MainActivity extends AppCompatActivity implements EditNameDialog.Ed
 
     @Override
     public void onFinishEditDialog(Bundle input) {
-        Toast.makeText(this, "Hi, " + input.getString("task") + input.getString("project"), Toast.LENGTH_SHORT).show();
-
         //create card
         TaskView newCard = new TaskView(getApplicationContext(), this);
         newCard.updateTaskInfo(input);
@@ -252,17 +253,31 @@ public class MainActivity extends AppCompatActivity implements EditNameDialog.Ed
     }
     private void saveLog() {
         String filename = "saveLog";
+        String saveLogContent = "";
         FileOutputStream outputStream;
 
         try {
+            FileInputStream inputStream = openFileInput(filename);
+            BufferedReader r = new BufferedReader(new InputStreamReader(inputStream));
+
+            String line = "";
+            while ((line = r.readLine()) != null) {
+                saveLogContent += line + "\n";
+            }
+        } catch (Exception e) {
+            //
+        }
+
+        try {
+            Toast.makeText(getBaseContext(), saveLogContent, Toast.LENGTH_LONG).show();
             outputStream = openFileOutput(filename, Context.MODE_PRIVATE);
             outputStream.write((createLog() + "\n").getBytes());
+            outputStream.write(saveLogContent.getBytes());
+
+            outputStream.close();
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
-    private void sendLog() {
-        //load
     }
 
     private void load() {
