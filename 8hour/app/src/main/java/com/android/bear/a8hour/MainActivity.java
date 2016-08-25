@@ -130,14 +130,10 @@ public class MainActivity extends AppCompatActivity implements EditNameDialog.Ed
         newDayButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                date = getDate();
-                weekDay = getDayofWeek();
-                String test = createLog();
-                saveLog();
-
-                //Toast.makeText(getApplicationContext(), test, Toast.LENGTH_SHORT).show();
-                //save all the info, all of it
-                //add getLog() to saved data
+                if(timeLeft<14400000) {
+                    saveLog();
+                    startNewDay();
+                }
             }
         });
 
@@ -151,7 +147,7 @@ public class MainActivity extends AppCompatActivity implements EditNameDialog.Ed
                     @Override
                     public void run() {
                         if(!paused) {
-                            timeLeft -= increment*60; //60 * 1000
+                            timeLeft -= increment; //60 * 1000
                             //mTextTime.setText(msGetTime(timeLeft));
                             if(timeLeft>0) {
                                 mPauseButton.setText(msGetTime(timeLeft));
@@ -162,7 +158,7 @@ public class MainActivity extends AppCompatActivity implements EditNameDialog.Ed
                                         selectedTask = tasks.get(0);
                                         selectedTask.selectCard();
                                     }
-                                    selectedTask.increment(increment * 60);
+                                    selectedTask.increment(increment); //increment * 60 for seconds
                                 }
 
                             } else {
@@ -170,7 +166,7 @@ public class MainActivity extends AppCompatActivity implements EditNameDialog.Ed
                             }
 
                             save();
-                            createNotification();
+                            //createNotification();
                         }
                     }
                 });
@@ -269,7 +265,7 @@ public class MainActivity extends AppCompatActivity implements EditNameDialog.Ed
         }
 
         try {
-            Toast.makeText(getBaseContext(), saveLogContent, Toast.LENGTH_LONG).show();
+            //Toast.makeText(getBaseContext(), saveLogContent, Toast.LENGTH_LONG).show();
             outputStream = openFileOutput(filename, Context.MODE_PRIVATE);
             outputStream.write((createLog() + "\n").getBytes());
             outputStream.write(saveLogContent.getBytes());
@@ -394,5 +390,15 @@ public class MainActivity extends AppCompatActivity implements EditNameDialog.Ed
             log += tasks.get(i).toLog();
         }
         return log;
+    }
+    public void startNewDay() {
+        timeLeft = 8 * 60 * 60 * 1000;
+        for(TaskView task: tasks) {
+            task.setTimetoZero();
+        }
+        save();
+        Intent intent = getIntent();
+        finish();
+        startActivity(intent);
     }
 }

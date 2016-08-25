@@ -167,4 +167,8 @@ public class TaskView extends LinearLayout implements /*View.OnLongClickListener
     private int msGetMinutes (long ms) {
         return (int)(ms % (60*60*1000)) / (1000 * 60);
     }
+
+    public void setTimetoZero() {
+        milliseconds = 0;
+    }
 }
